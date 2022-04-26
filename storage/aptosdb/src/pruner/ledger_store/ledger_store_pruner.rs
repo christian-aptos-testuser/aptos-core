@@ -18,9 +18,9 @@ use aptos_types::transaction::{AtomicVersion, Version};
 use schemadb::{ReadOptions, SchemaBatch, DB};
 use std::sync::{atomic::Ordering, Arc};
 
-pub const LEDGER_STORE_PRUNER_NAME: &str = "ledger store pruner";
+pub const LEDGER_PRUNER_NAME: &str = "ledger pruner";
 
-pub struct LedgerStorePruner {
+pub struct LedgerPruner {
     db: Arc<DB>,
     /// Keeps track of the target version that the pruner needs to achieve.
     target_version: AtomicVersion,
@@ -31,9 +31,9 @@ pub struct LedgerStorePruner {
     ledger_counter_pruner: Arc<dyn DBSubPruner + Send + Sync>,
 }
 
-impl DBPruner for LedgerStorePruner {
+impl DBPruner for LedgerPruner {
     fn name(&self) -> &'static str {
-        LEDGER_STORE_PRUNER_NAME
+        LEDGER_PRUNER_NAME
     }
 
     fn prune(&self, db_batch: &mut SchemaBatch) -> anyhow::Result<Version> {
@@ -83,19 +83,19 @@ impl DBPruner for LedgerStorePruner {
         self.least_readable_version
             .store(least_readable_version, Ordering::Relaxed);
         APTOS_PRUNER_LEAST_READABLE_VERSION
-            .with_label_values(&["transaction_store"])
+            .with_label_values(&["ledger_pruner"])
             .set(least_readable_version as i64);
     }
 }
 
-impl LedgerStorePruner {
+impl LedgerPruner {
     pub(in crate::pruner) fn new(
         db: Arc<DB>,
         transaction_store: Arc<TransactionStore>,
         event_store: Arc<EventStore>,
         ledger_store: Arc<LedgerStore>,
     ) -> Self {
-        LedgerStorePruner {
+        LedgerPruner {
             db,
             target_version: AtomicVersion::new(0),
             least_readable_version: AtomicVersion::new(0),

@@ -5,7 +5,7 @@
 
 use crate::{
     pruner::{
-        db_pruner::DBPruner, ledger_store::ledger_store_pruner::LedgerStorePruner,
+        db_pruner::DBPruner, ledger_store::ledger_store_pruner::LedgerPruner,
         state_store::StateStorePruner,
     },
     EventStore, LedgerStore, TransactionStore,
@@ -27,7 +27,7 @@ pub fn create_db_pruners(
             0,
             Instant::now(),
         ))),
-        Mutex::new(Arc::new(LedgerStorePruner::new(
+        Mutex::new(Arc::new(LedgerPruner::new(
             Arc::clone(&db),
             Arc::clone(&transaction_store),
             Arc::clone(&event_store),
