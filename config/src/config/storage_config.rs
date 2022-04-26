@@ -50,7 +50,7 @@ pub struct StorageConfig {
 
 pub const NO_OP_STORAGE_PRUNER_CONFIG: StoragePrunerConfig = StoragePrunerConfig {
     state_store_prune_window: None,
-    default_prune_window: None,
+    ledger_store_prune_window: None,
     max_version_to_prune_per_batch: Some(100),
     pruning_batch_size: 10_000,
 };
@@ -64,7 +64,7 @@ pub struct StoragePrunerConfig {
     /// This is the default pruning window for any other store except for state store. State store
     /// being big in size, we might want to configure a smaller window for state store vs other
     /// store.
-    pub default_prune_window: Option<u64>,
+    pub ledger_store_prune_window: Option<u64>,
 
     /// Maximum version to prune per batch, should not be too large to avoid spike in disk IO caused
     /// by large batches in the pruner.
@@ -78,13 +78,13 @@ pub struct StoragePrunerConfig {
 impl StoragePrunerConfig {
     pub fn new(
         state_store_prune_window: Option<u64>,
-        default_store_prune_window: Option<u64>,
+        ledger_store_prune_window: Option<u64>,
         max_version_to_prune_per_batch: Option<u64>,
         pruning_batch_size: usize,
     ) -> Self {
         StoragePrunerConfig {
             state_store_prune_window,
-            default_prune_window: default_store_prune_window,
+            ledger_store_prune_window,
             max_version_to_prune_per_batch,
             pruning_batch_size,
         }
@@ -106,7 +106,7 @@ impl Default for StorageConfig {
             // depending on the size of an average account blob.
             storage_pruner_config: StoragePrunerConfig {
                 state_store_prune_window: Some(1_000_000),
-                default_prune_window: Some(10_000_000),
+                ledger_store_prune_window: Some(10_000_000),
                 max_version_to_prune_per_batch: Some(10_000),
                 pruning_batch_size: 10_000,
             },

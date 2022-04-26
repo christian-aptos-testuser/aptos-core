@@ -67,7 +67,7 @@ fn test_state_store_pruner() {
         Arc::clone(&db),
         StoragePrunerConfig {
             state_store_prune_window: Some(0),
-            default_prune_window: Some(0),
+            ledger_store_prune_window: Some(0),
             max_version_to_prune_per_batch: Some(100),
             pruning_batch_size: 1,
         },
@@ -184,12 +184,12 @@ fn test_worker_quit_eagerly() {
         );
         command_sender
             .send(Command::Prune {
-                target_db_versions: vec![1, 0, 0, 0, 0],
+                target_db_versions: vec![1, 0],
             })
             .unwrap();
         command_sender
             .send(Command::Prune {
-                target_db_versions: vec![2, 0, 0, 0, 0],
+                target_db_versions: vec![2, 0],
             })
             .unwrap();
         command_sender.send(Command::Quit).unwrap();

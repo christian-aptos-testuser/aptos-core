@@ -50,7 +50,7 @@ fn verify_write_set_pruner(write_sets: Vec<WriteSet>) {
         Arc::clone(&aptos_db.db),
         StoragePrunerConfig {
             state_store_prune_window: Some(0),
-            default_prune_window: Some(0),
+            ledger_store_prune_window: Some(0),
             max_version_to_prune_per_batch: Some(100),
             pruning_batch_size: 1,
         },
@@ -72,7 +72,7 @@ fn verify_write_set_pruner(write_sets: Vec<WriteSet>) {
         pruner
             .wake_and_wait(
                 i as u64, /* latest_version */
-                PrunerIndex::WriteSetPrunerIndex as usize,
+                PrunerIndex::LedgerStorePrunerIndex as usize,
             )
             .unwrap();
         // ensure that all transaction up to i * 2 has been pruned
@@ -102,7 +102,7 @@ fn verify_txn_store_pruner(
         Arc::clone(&aptos_db.db),
         StoragePrunerConfig {
             state_store_prune_window: Some(0),
-            default_prune_window: Some(0),
+            ledger_store_prune_window: Some(0),
             max_version_to_prune_per_batch: Some(100),
             pruning_batch_size: 1,
         },
@@ -125,7 +125,7 @@ fn verify_txn_store_pruner(
         pruner
             .wake_and_wait(
                 i as u64, /* latest_version */
-                PrunerIndex::TransactionStorePrunerIndex as usize,
+                PrunerIndex::LedgerStorePrunerIndex as usize,
             )
             .unwrap();
         // ensure that all transaction up to i * 2 has been pruned
