@@ -67,7 +67,7 @@ fn test_state_store_pruner() {
         Arc::clone(&db),
         StoragePrunerConfig {
             state_store_prune_window: Some(0),
-            ledger_store_prune_window: Some(0),
+            ledger_prune_window: Some(0),
             pruning_batch_size: 1,
         },
         Arc::clone(transaction_store),

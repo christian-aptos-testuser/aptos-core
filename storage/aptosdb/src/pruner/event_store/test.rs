@@ -42,7 +42,7 @@ fn verify_event_store_pruner(events: Vec<Vec<ContractEvent>>) {
         Arc::clone(&aptos_db.db),
         StoragePrunerConfig {
             state_store_prune_window: Some(0),
-            ledger_store_prune_window: Some(0),
+            ledger_prune_window: Some(0),
             pruning_batch_size: 1,
         },
         Arc::clone(&aptos_db.transaction_store),
@@ -63,7 +63,7 @@ fn verify_event_store_pruner(events: Vec<Vec<ContractEvent>>) {
         pruner
             .wake_and_wait(
                 i as u64, /* latest_version */
-                PrunerIndex::LedgerStorePrunerIndex as usize,
+                PrunerIndex::LedgerPrunerIndex as usize,
             )
             .unwrap();
         // ensure that all events up to i * 2 has been pruned

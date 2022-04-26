@@ -50,7 +50,7 @@ pub struct StorageConfig {
 
 pub const NO_OP_STORAGE_PRUNER_CONFIG: StoragePrunerConfig = StoragePrunerConfig {
     state_store_prune_window: None,
-    ledger_store_prune_window: None,
+    ledger_prune_window: None,
     pruning_batch_size: 10_000,
 };
 
@@ -63,7 +63,7 @@ pub struct StoragePrunerConfig {
     /// This is the default pruning window for any other store except for state store. State store
     /// being big in size, we might want to configure a smaller window for state store vs other
     /// store.
-    pub ledger_store_prune_window: Option<u64>,
+    pub ledger_prune_window: Option<u64>,
     /// Batch size of the versions to be sent to the pruner - this is to avoid slowdown due to
     /// issuing too many DB calls and batch prune instead.
     pub pruning_batch_size: usize,
@@ -77,7 +77,7 @@ impl StoragePrunerConfig {
     ) -> Self {
         StoragePrunerConfig {
             state_store_prune_window,
-            ledger_store_prune_window,
+            ledger_prune_window: ledger_store_prune_window,
             pruning_batch_size,
         }
     }
@@ -98,7 +98,7 @@ impl Default for StorageConfig {
             // depending on the size of an average account blob.
             storage_pruner_config: StoragePrunerConfig {
                 state_store_prune_window: Some(1_000_000),
-                ledger_store_prune_window: Some(10_000_000),
+                ledger_prune_window: Some(10_000_000),
                 pruning_batch_size: 10_000,
             },
             data_dir: PathBuf::from("/opt/aptos/data"),
