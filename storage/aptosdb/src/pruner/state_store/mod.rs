@@ -36,15 +36,10 @@ impl DBPruner for StateStorePruner {
         STATE_STORE_PRUNER_NAME
     }
 
-    fn prune(&self, _db_batch: &mut SchemaBatch, max_versions: u64) -> anyhow::Result<Version> {
+    fn prune(&self, _db_batch: &mut SchemaBatch) -> anyhow::Result<Version> {
         let least_readable_version = self.least_readable_version.load(Ordering::Relaxed);
         let target_version = self.target_version();
-        return match prune_state_store(
-            self.db.clone(),
-            least_readable_version,
-            target_version,
-            max_versions as usize,
-        ) {
+        return match prune_state_store(self.db.clone(), least_readable_version, target_version) {
             Ok(new_least_readable_version) => {
                 self.record_progress(new_least_readable_version);
                 // Try to purge the log.
@@ -161,11 +156,9 @@ pub fn prune_state_store(
     db: Arc<DB>,
     least_readable_version: Version,
     target_version: Version,
-    max_versions: usize,
 ) -> anyhow::Result<Version> {
     let indices =
         StaleNodeIndicesByVersionIterator::new(&db, least_readable_version, target_version)?
-            .take(max_versions) // Iterator<Item = Result<Vec<StaleNodeIndex>>>
             .collect::<anyhow::Result<Vec<_>>>()? // now Vec<Vec<StaleNodeIndex>>
             .into_iter()
             .flatten()

@@ -25,7 +25,6 @@ pub struct Worker {
     /// Indicates if there's NOT any pending work to do currently, to hint
     /// `Self::receive_commands()` to `recv()` blocking-ly.
     blocking_recv: bool,
-    max_version_to_prune_per_batch: u64,
 }
 
 impl Worker {
@@ -36,7 +35,6 @@ impl Worker {
         event_store: Arc<EventStore>,
         command_receiver: Receiver<Command>,
         least_readable_versions: Arc<Mutex<Vec<Version>>>,
-        max_version_to_prune_per_batch: u64,
     ) -> Self {
         let db_pruners =
             utils::create_db_pruners(db.clone(), transaction_store, ledger_store, event_store);
@@ -46,7 +44,6 @@ impl Worker {
             command_receiver,
             least_readable_versions,
             blocking_recv: true,
-            max_version_to_prune_per_batch,
         }
     }
 
@@ -60,9 +57,7 @@ impl Worker {
             let mut error_in_pruning = false;
             let mut db_batch = SchemaBatch::new();
             for db_pruner in &self.db_pruners {
-                let result = db_pruner
-                    .lock()
-                    .prune(&mut db_batch, self.max_version_to_prune_per_batch);
+                let result = db_pruner.lock().prune(&mut db_batch);
                 result.map_err(|_| error_in_pruning = true).ok();
             }
             // Commit all the changes to DB atomically

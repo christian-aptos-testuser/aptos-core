@@ -36,11 +36,11 @@ impl DBPruner for LedgerStorePruner {
         LEDGER_STORE_PRUNER_NAME
     }
 
-    fn prune(&self, db_batch: &mut SchemaBatch, max_versions: u64) -> anyhow::Result<Version> {
+    fn prune(&self, db_batch: &mut SchemaBatch) -> anyhow::Result<Version> {
         let least_readable_version = self.least_readable_version();
         // Current target version might be less than the target version to ensure we don't prune
         // more than max_version in one go.
-        let current_target_version = self.get_currrent_batch_target(max_versions);
+        let current_target_version = self.target_version();
         self.transaction_store_pruner.prune(
             db_batch,
             least_readable_version,

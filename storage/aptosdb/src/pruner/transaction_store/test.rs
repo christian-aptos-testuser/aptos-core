@@ -51,7 +51,6 @@ fn verify_write_set_pruner(write_sets: Vec<WriteSet>) {
         StoragePrunerConfig {
             state_store_prune_window: Some(0),
             ledger_store_prune_window: Some(0),
-            max_version_to_prune_per_batch: Some(100),
             pruning_batch_size: 1,
         },
         Arc::clone(transaction_store),
@@ -103,7 +102,6 @@ fn verify_txn_store_pruner(
         StoragePrunerConfig {
             state_store_prune_window: Some(0),
             ledger_store_prune_window: Some(0),
-            max_version_to_prune_per_batch: Some(100),
             pruning_batch_size: 1,
         },
         Arc::clone(transaction_store),

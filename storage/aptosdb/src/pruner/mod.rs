@@ -94,9 +94,6 @@ impl Pruner {
             event_store,
             command_receiver,
             least_readable_version,
-            storage_pruner_config
-                .max_version_to_prune_per_batch
-                .expect("Max version to prune per batch is expected"),
         );
         let worker_thread = std::thread::Builder::new()
             .name("aptosdb_pruner".into())

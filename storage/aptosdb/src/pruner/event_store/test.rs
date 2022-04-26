@@ -43,7 +43,6 @@ fn verify_event_store_pruner(events: Vec<Vec<ContractEvent>>) {
         StoragePrunerConfig {
             state_store_prune_window: Some(0),
             ledger_store_prune_window: Some(0),
-            max_version_to_prune_per_batch: Some(100),
             pruning_batch_size: 1,
         },
         Arc::clone(&aptos_db.transaction_store),

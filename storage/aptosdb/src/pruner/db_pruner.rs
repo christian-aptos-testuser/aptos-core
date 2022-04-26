@@ -4,7 +4,7 @@
 use aptos_logger::{error, info};
 use aptos_types::transaction::Version;
 use schemadb::SchemaBatch;
-use std::{cmp::min, thread::sleep, time::Duration};
+use std::{thread::sleep, time::Duration};
 
 /// Defines the trait for pruner for different DB
 pub trait DBPruner {
@@ -38,7 +38,7 @@ pub trait DBPruner {
 
     /// Performs the actual pruning, a target version is passed, which is the target the pruner
     /// tries to prune.
-    fn prune(&self, db_batch: &mut SchemaBatch, max_versions: u64) -> anyhow::Result<Version>;
+    fn prune(&self, db_batch: &mut SchemaBatch) -> anyhow::Result<Version>;
 
     /// Initializes the least readable version stored in underlying DB storage
     fn initialize_least_readable_version(&self) -> anyhow::Result<Version>;
@@ -52,16 +52,6 @@ pub trait DBPruner {
     /// Returns the target version for the DB pruner
     fn target_version(&self) -> Version;
 
-    /// Returns the target version for the current pruning round - this might be different from the
-    /// target_version() because we need to keep max_version in account.
-    fn get_currrent_batch_target(&self, max_versions: Version) -> Version {
-        // Current target version  might be less than the target version to ensure we don't prune
-        // more than max_version in one go.
-        min(
-            self.least_readable_version() + max_versions as u64,
-            self.target_version(),
-        )
-    }
     /// Records the current progress of the pruner by updating the least readable version
     fn record_progress(&self, least_readable_version: Version);
 

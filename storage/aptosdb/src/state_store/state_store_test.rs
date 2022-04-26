@@ -83,13 +83,11 @@ fn prune_stale_indices(
     store: &StateStore,
     least_readable_version: Version,
     target_least_readable_version: Version,
-    limit: usize,
 ) {
     pruner::state_store::prune_state_store(
         Arc::clone(&store.db),
         least_readable_version,
         target_least_readable_version,
-        limit,
     )
     .unwrap();
 }
@@ -352,16 +350,14 @@ fn test_retired_records() {
         prune_stale_indices(
             store, 0, /* least_readable_version */
             1, /* target_least_readable_version */
-            0, /* limit */
         );
         verify_value_and_proof(store, address1, Some(&value1), 0, root0);
     }
     // Prune till version=1.
     {
         prune_stale_indices(
-            store, 0,   /* least_readable_version */
-            1,   /* target_least_readable_version */
-            100, /* limit */
+            store, 0, /* least_readable_version */
+            1, /* target_least_readable_version */
         );
         // root0 is gone.
         assert!(store
@@ -375,9 +371,8 @@ fn test_retired_records() {
     // Prune till version=2.
     {
         prune_stale_indices(
-            store, 1,   /* least_readable_version */
-            2,   /* target_least_readable_version */
-            100, /* limit */
+            store, 1, /* least_readable_version */
+            2, /* target_least_readable_version */
         );
         // root1 is gone.
         assert!(store
