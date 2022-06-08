@@ -8,6 +8,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: $NAME
+      - run: echo $NAME
         env:
           NAME: ${{ github.event.check_run.name }}
