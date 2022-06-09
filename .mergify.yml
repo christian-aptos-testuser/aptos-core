@@ -16,6 +16,6 @@ pull_request_rules:
       queue:
         name: default
         require_branch_protection: false
-      label:
-        remove:
-          - automerge
+      # label:
+      #   remove:
+      #     - automerge
