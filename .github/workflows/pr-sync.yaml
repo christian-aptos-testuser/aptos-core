@@ -1,0 +1,19 @@
+name: "Sync PR to Branch"
+on:
+  pull_request:
+
+jobs:
+  sync-branch:
+    name: Update test branch
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'automerge')
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: connor-baer/action-sync-branch@main
+        with:
+          branch: pr-${{github.event.pull_request.number}}-mirror
+          token: ${{ secrets.GITHUB_TOKEN }}
+          force: true
