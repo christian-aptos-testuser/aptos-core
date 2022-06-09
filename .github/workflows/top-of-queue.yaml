@@ -6,7 +6,7 @@ on:
 jobs:
   scripts-lint:
     runs-on: ubuntu-latest
-    if: contains(github.event.check_run.output.title, 'merging')
+    if: contains(github.event.check_run.output.title, '⛴ merging PR')
     steps:
       - run: jq "$NAME"
         env:
