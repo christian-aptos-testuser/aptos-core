@@ -13,5 +13,5 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - run: |
-          git checkout -b pr-${{github.event.pull_request.number}}-mirror 
-          git push --force --set-upstream origin pr-${{github.event.pull_request.number}}-mirror
+          git checkout -b pr-mirror/${{github.event.pull_request.number}} 
+          git push --force --set-upstream origin pr-mirror/${{github.event.pull_request.number}}
