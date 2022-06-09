@@ -15,6 +15,7 @@ pull_request_rules:
     actions:
       queue:
         name: default
+        method: squash
         require_branch_protection: false
       copy:
         branches:
