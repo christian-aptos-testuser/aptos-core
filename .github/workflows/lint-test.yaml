@@ -10,6 +10,7 @@ on:
       - canary
       - staging
       - stuff5
+      - testing
 
 jobs:
   scripts-lint:
