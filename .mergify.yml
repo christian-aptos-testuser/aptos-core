@@ -1,6 +1,6 @@
 queue_rules:
   - name: default
-    conditions: 
+    conditions:
       # - base=main
       - check-success=scripts-lint
       - check-success=ecosystem-lint
@@ -9,9 +9,13 @@ pull_request_rules:
   - name: merge using the merge queue
     conditions:
       - base=main
+      - label=automerge
       # - check-success=scripts-lint
       # - check-success=ecosystem-lint
     actions:
+      label:
+        remove:
+          - automerge
       queue:
         name: default
         require_branch_protection: false
