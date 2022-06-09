@@ -1,7 +1,13 @@
+queue_rules:
+  - name: default
+    conditions: []
+
 pull_request_rules:
-  - name: Automatic merge on approval
+  - name: merge using the merge queue
     conditions:
-      - "#approved-reviews-by>=1"
+      - base=main
+      - check-success=scripts-lint
+      - check-success=ecosystem-lint
     actions:
-      merge:
-        method: merge
+      queue:
+        name: default
