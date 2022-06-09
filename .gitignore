@@ -8,6 +8,8 @@
 # Ignore wallet mnemonic files used for deterministic key derivation
 *.mnemonic
 
+**/foo.json
+
 # GDB related
 **/.gdb_history
 

@@ -6,8 +6,13 @@ on:
 jobs:
   scripts-lint:
     runs-on: ubuntu-latest
-
+    if: contains(github.event.check_run.output.title, 'merging')
     steps:
       - run: jq "$NAME"
         env:
           NAME: ${{ toJson(github.event.check_run) }}
+      - run: echo "copying PR"
+      - uses: actions/checkout@v3
+        with:
+          ref: "${{ github.event.check_run.check_suite.head_sha }}"
+      - run: git checkout -b testing && git push --set-upstream origin testing
