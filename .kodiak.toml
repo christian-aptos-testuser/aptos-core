@@ -9,3 +9,4 @@ method = "squash"
 dont_wait_on_status_checks = ["ecosystem-lint", "scripts-lint"]
 
 automerge_label = "merge"
+
