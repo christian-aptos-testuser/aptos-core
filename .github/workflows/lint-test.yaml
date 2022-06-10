@@ -7,10 +7,6 @@ on:
       - devnet
       - testnet
       - auto
-      - canary
-      - staging
-      - stuff5
-      - testing
 
 jobs:
   scripts-lint:
