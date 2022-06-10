@@ -1,0 +1,20 @@
+queue_rules:
+  - name: default
+    conditions:
+      # - base=main
+      - check-success=scripts-lint
+      - check-success=ecosystem-lint
+
+pull_request_rules:
+  - name: merge using the merge queue
+    conditions:
+      - base=main
+      - label=automerge
+      # - check-success=scripts-lint
+      # - check-success=ecosystem-lint
+    actions:
+      queue:
+        name: default
+        method: squash
+        require_branch_protection: false
+
