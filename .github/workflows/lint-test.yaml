@@ -31,7 +31,6 @@ jobs:
 
   ecosystem-lint:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/testing'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
