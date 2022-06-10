@@ -7,7 +7,6 @@ on:
       - devnet
       - testnet
       - auto
-      - canary
 
 jobs:
   scripts-lint:
