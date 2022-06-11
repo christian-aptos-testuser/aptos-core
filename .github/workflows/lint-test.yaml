@@ -9,6 +9,9 @@ on:
       - auto
       - canary
       - staging
+      - stuff5
+      - testing
+      - pr-mirror/**
 
 jobs:
   scripts-lint:
@@ -19,16 +22,18 @@ jobs:
       - run: shellcheck scripts/dev_setup.sh
       - run: shellcheck scripts/dockerhub_prune.sh
       - run: shellcheck scripts/weekly-dep-report.sh
+      # - run: fail
 
   e2e-test:
     # if: github.event_name == 'push' 
     environment: e2e-test
     runs-on: ubuntu-latest
     steps:
-      - run: sleep 120 && crash
+      - run: sleep 60
 
   ecosystem-lint:
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/testing'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
