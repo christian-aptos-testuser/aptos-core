@@ -24,11 +24,12 @@ jobs:
       - run: shellcheck scripts/weekly-dep-report.sh
       # - run: fail
 
-  # e2e-test:
-  #   if: github.event_name == 'push'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - run: sleep 120 && crash
+  e2e-test:
+    # if: github.event_name == 'push' 
+    environment: e2e-test
+    runs-on: ubuntu-latest
+    steps:
+      - run: sleep 60
 
   ecosystem-lint:
     runs-on: ubuntu-latest
